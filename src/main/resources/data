@@ -1,0 +1,2 @@
+create table pessoa (id bigint not null, data_de_nascimento date, nome varchar(255), primary key (id));
+INSERT INTO pessoa (DATA_DE_NASCIMENTO, NOME, ID) VALUES ('1997-05-11', 'Ramon Nascimento Vanderlei','1');
