@@ -32,7 +32,7 @@ public class PessoaConverter {
 		return modelMapper.map(pessoaRequest, Pessoa.class);
 	}
 
-	public Page<PessoaResponse> converter(Page<Pessoa> pessoa) {
+	public Page<PessoaResponse> toPageResponse(Page<Pessoa> pessoa) {
 		return pessoa.map(this::toResponse);
 	}
 
@@ -44,5 +44,8 @@ public class PessoaConverter {
 		return modelMapper.map(pessoa, PessoaConsultaResponse.class);
 	}
 	
+	public Page<PessoaConsultaResponse> toPageConsultaResponse(Page<Pessoa> pessoa) {
+		return pessoa.map(this::toConsultaResponse);
+	}
 
 }

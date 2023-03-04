@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class PessoaConsultaResponse {
 	
+	private Long id;
 	private String nome;
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate dataDeNascimento;

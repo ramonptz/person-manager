@@ -9,7 +9,8 @@ import demo.manager.domain.model.Pessoa;
 
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
-
+	
+	//Faz uma busca no banco de dados e retorna nomes que contenham a variável no nome independente se é maiúscula ou minúscula
 	Page<Pessoa> findByNomeIgnoreCaseContaining(String nome, Pageable paginacao);
 
 }

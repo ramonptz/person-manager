@@ -28,61 +28,36 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("/endereco")
 public class EnderecoController {
-	
+
 	private EnderecoService enderecoService;
 	private EnderecoConverter enderecoConverter;
 
+	//Cria novo endereço vinculado a pessoa que tem seu id passado na URL
+	//o primeiro endereço sempre será o principal até que outro seja criado ou atualizado e passado como principal
 	@PostMapping("/criar/{idPessoa}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public EnderecoResponse criarEndereco(@Valid @RequestBody EnderecoRequest enderecoRequest, @PathVariable Long idPessoa) {
-		Endereco novoEndereco = enderecoService.novoEndereco((enderecoConverter.toEntity(enderecoRequest)),idPessoa);
+	public EnderecoResponse criarEndereco(@Valid @RequestBody EnderecoRequest enderecoRequest,
+			@PathVariable Long idPessoa) {
+		Endereco novoEndereco = enderecoService.novoEndereco((enderecoConverter.toEntity(enderecoRequest)), idPessoa);
 		return enderecoConverter.toResponse(novoEndereco);
 
 	}
-	
+
+	//Atualiza o enderço e pode também ser feita a alteração de endereço principal através desse método
 	@PutMapping("atualizar/{enderecoId}")
 	public ResponseEntity<EnderecoResponse> atualizar(@PathVariable Long enderecoId,
-			@RequestBody EnderecoRequest enderecoAtualizado){
+			@RequestBody EnderecoRequest enderecoAtualizado) {
 		Optional<Endereco> enderecoExistente = enderecoService.buscarPorId(enderecoId);
-//		if(!enderecoExistente.isPresent()) {
-//		return ResponseEntity.notFound().build();
-//		}
-		enderecoExistente.orElseThrow(()-> new EnderecoNotFound());
-		
-		Endereco endereco = enderecoExistente.get();
-		if (enderecoAtualizado.getCep()==null) {
-			endereco.setCep(enderecoExistente.get().getCep());
-		} else {
-			endereco.setCep(enderecoAtualizado.getCep());
-		}
-		
-		if (enderecoAtualizado.getCidade() == null) {
-			endereco.setCidade(enderecoExistente.get().getCidade());
-		} else {
-			endereco.setCidade(enderecoAtualizado.getCidade());
-		}
-		if (enderecoAtualizado.getLogradouro() == null) {
-			endereco.setLogradouro(enderecoExistente.get().getLogradouro());
-		} else {
-			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
-		}
-		if(enderecoAtualizado.getNumero() == null) {
-			endereco.setNumero(enderecoExistente.get().getNumero());
-		} else {
-			endereco.setNumero(enderecoAtualizado.getNumero());
-		}
-		if(enderecoAtualizado.getEnderecoPrincipal() == null) {
-			endereco.setEnderecoPrincipal(enderecoExistente.get().getEnderecoPrincipal());
-		} else {
-			endereco.setEnderecoPrincipal(enderecoAtualizado.getEnderecoPrincipal());
-		}
+		enderecoExistente.orElseThrow(() -> new EnderecoNotFound());
 
-		enderecoService.salvarEAtualizaEnderecoPrincipal(endereco,enderecoExistente.get().getPessoa().getId());
-		
-		
+		Endereco endereco = enderecoService.atualizaEndereco(enderecoExistente.get(), enderecoAtualizado);
+
+		enderecoService.salvarEAtualizaEnderecoPrincipal(endereco, enderecoExistente.get().getPessoa().getId());
+
 		return ResponseEntity.ok(enderecoConverter.toResponse(endereco));
 	}
-	
+
+	//Retorna uma lista com os endereços da pessoa que tem seu id passado na URL
 	@GetMapping("/listarEnderecos/{pessoaId}")
 	public List<EnderecoResponse> listar(@PathVariable Long pessoaId) {
 		List<Endereco> endereco = enderecoService.listarPelaPessoa(pessoaId);
