@@ -39,20 +39,33 @@ public class PessoaService {
 	}
 
 	//Edita as informações da pessoa atualizando apenas os campos que são passados
+//	public Pessoa editaPessoa(Pessoa pessoaExistente, PessoaRequest pessoaEditada) {
+//		Pessoa pessoa = pessoaExistente;
+//		if (pessoaEditada.getNome() == null) {
+//			pessoa.setNome(pessoaExistente.getNome());
+//		} else {
+//			pessoa.setNome(pessoaEditada.getNome());
+//		}
+//
+//		if (pessoaEditada.getDataDeNascimento() == null) {
+//			pessoa.setDataDeNascimento(pessoaExistente.getDataDeNascimento());
+//		} else {
+//			pessoa.setDataDeNascimento(pessoaEditada.getDataDeNascimento());
+//		}
+//		return salvar(pessoa);
+//	}
+	
+	//Edita as informações da pessoa atualizando apenas os campos que são passados
 	public Pessoa editaPessoa(Pessoa pessoaExistente, PessoaRequest pessoaEditada) {
 		Pessoa pessoa = pessoaExistente;
-		if (pessoaEditada.getNome() == null) {
-			pessoa.setNome(pessoaExistente.getNome());
-		} else {
+		if (pessoaEditada.getNome() != null) {
 			pessoa.setNome(pessoaEditada.getNome());
 		}
 
-		if (pessoaEditada.getDataDeNascimento() == null) {
-			pessoa.setDataDeNascimento(pessoaExistente.getDataDeNascimento());
-		} else {
+		if (pessoaEditada.getDataDeNascimento() != null) {
 			pessoa.setDataDeNascimento(pessoaEditada.getDataDeNascimento());
 		}
-		return pessoa;
+		return salvar(pessoa);
 	}
 
 }

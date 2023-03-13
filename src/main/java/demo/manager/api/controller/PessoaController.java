@@ -65,7 +65,7 @@ public class PessoaController {
 
 		Pessoa pessoa = pessoaService.editaPessoa(pessoaExistente.get(), pessoaEditada);
 
-		pessoaService.salvar(pessoa);
+		//pessoaService.salvar(pessoa);
 
 		return ResponseEntity.ok(pessoaConverter.toResponse(pessoa));
 

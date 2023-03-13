@@ -20,8 +20,9 @@ public class EnderecoService {
 	private EnderecoRepository enderecoRepository;
 	private PessoaRepository pessoaRepository;
 
-	//Cria um novo endereço, caso seja o primeiro ele torna o endereço em principal ou caso seja criado outro
-	//endereço como principal o outro automaticamente deixa de ser principal
+	// Cria um novo endereço, caso seja o primeiro ele torna o endereço em principal
+	// ou caso seja criado outro
+	// endereço como principal o outro automaticamente deixa de ser principal
 	public Endereco novoEndereco(Endereco novoEndereco, Long id) {
 		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 		pessoa.orElseThrow(() -> new PessoaNotFound());
@@ -29,19 +30,21 @@ public class EnderecoService {
 		return enderecoRepository.save(novoEndereco);
 	}
 
-	//faz uma busca do endereço pelo id
+	// faz uma busca do endereço pelo id
 	public Optional<Endereco> buscarPorId(Long enderecoId) {
 
 		return enderecoRepository.findById(enderecoId);
 	}
-	//Salva e atualiza o endereço principal caso tenha necessidade
+
+	// Salva e atualiza o endereço principal caso tenha necessidade
 	public Endereco salvarEAtualizaEnderecoPrincipal(Endereco enderecoNovo, Long id) {
 		atualizaEnderecoPrincipal(enderecoNovo, id);
 		return enderecoRepository.save(enderecoNovo);
 
 	}
 
-	//atualiza o endereço para informar que um endereço existente passou a ser o principal
+	// atualiza o endereço para informar que um endereço existente passou a ser o
+	// principal
 	public void atualizaEnderecoPrincipal(Endereco endereco, Long id) {
 		Pessoa pessoa = pessoaRepository.getReferenceById(id);
 		if (pessoa.getEndereco().isEmpty()) {
@@ -55,7 +58,7 @@ public class EnderecoService {
 		endereco.setPessoa(pessoa);
 	}
 
-	//Lista os endereços de uma pessoa
+	// Lista os endereços de uma pessoa
 	public List<Endereco> listarPelaPessoa(Long pessoaId) {
 
 		Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
@@ -63,34 +66,56 @@ public class EnderecoService {
 
 		return pessoa.get().getEndereco();
 	}
-	
-	//Atualiza os dados de um endereço
+
+	// Atualiza os dados de um endereço
+//	public Endereco atualizaEndereco(Endereco enderecoExistente, EnderecoRequest enderecoAtualizado) {
+//		Endereco endereco = enderecoExistente;
+//		if (enderecoAtualizado.getCep() == null) {
+//			endereco.setCep(enderecoExistente.getCep());
+//		} else {
+//			endereco.setCep(enderecoAtualizado.getCep());
+//		}
+//
+//		if (enderecoAtualizado.getCidade() == null) {
+//			endereco.setCidade(enderecoExistente.getCidade());
+//		} else {
+//			endereco.setCidade(enderecoAtualizado.getCidade());
+//		}
+//		if (enderecoAtualizado.getLogradouro() == null) {
+//			endereco.setLogradouro(enderecoExistente.getLogradouro());
+//		} else {
+//			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
+//		}
+//		if (enderecoAtualizado.getNumero() == null) {
+//			endereco.setNumero(enderecoExistente.getNumero());
+//		} else {
+//			endereco.setNumero(enderecoAtualizado.getNumero());
+//		}
+//		if (enderecoAtualizado.getEnderecoPrincipal() == null) {
+//			endereco.setEnderecoPrincipal(enderecoExistente.getEnderecoPrincipal());
+//		} else {
+//			endereco.setEnderecoPrincipal(enderecoAtualizado.getEnderecoPrincipal());
+//		}
+//		return endereco;
+//	}
+
+	// Atualiza os dados de um endereço
 	public Endereco atualizaEndereco(Endereco enderecoExistente, EnderecoRequest enderecoAtualizado) {
 		Endereco endereco = enderecoExistente;
-		if (enderecoAtualizado.getCep() == null) {
-			endereco.setCep(enderecoExistente.getCep());
-		} else {
+		if (enderecoAtualizado.getCep() != null) {
 			endereco.setCep(enderecoAtualizado.getCep());
 		}
 
-		if (enderecoAtualizado.getCidade() == null) {
-			endereco.setCidade(enderecoExistente.getCidade());
-		} else {
+		if (enderecoAtualizado.getCidade() != null) {
 			endereco.setCidade(enderecoAtualizado.getCidade());
 		}
-		if (enderecoAtualizado.getLogradouro() == null) {
-			endereco.setLogradouro(enderecoExistente.getLogradouro());
-		} else {
+		if (enderecoAtualizado.getLogradouro() != null) {
 			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
 		}
-		if (enderecoAtualizado.getNumero() == null) {
-			endereco.setNumero(enderecoExistente.getNumero());
-		} else {
+		if (enderecoAtualizado.getNumero() != null) {
 			endereco.setNumero(enderecoAtualizado.getNumero());
 		}
-		if (enderecoAtualizado.getEnderecoPrincipal() == null) {
-			endereco.setEnderecoPrincipal(enderecoExistente.getEnderecoPrincipal());
-		} else {
+		if (enderecoAtualizado.getEnderecoPrincipal() != null) {
 			endereco.setEnderecoPrincipal(enderecoAtualizado.getEnderecoPrincipal());
 		}
 		return endereco;
