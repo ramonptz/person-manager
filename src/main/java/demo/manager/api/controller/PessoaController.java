@@ -91,7 +91,7 @@ public class PessoaController {
 
 	}
 	
-	//Cria uma nova pessoa, nome e data de nascimento são validados para não serem nulos
+	//Cria novas pessoas passadas por umas lista(array), nome e data de nascimento são validados para não serem nulos
 		@PostMapping("/criar-lista")
 		@ResponseStatus(HttpStatus.CREATED)
 		public List<PessoaResponse> criarListaDePessoa(@Valid @RequestBody List<PessoaRequest> pessoaRequest) {
