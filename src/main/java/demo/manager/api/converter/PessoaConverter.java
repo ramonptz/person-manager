@@ -27,6 +27,10 @@ public class PessoaConverter {
 	public List<PessoaResponse> toResponseCollection(List<Pessoa> pessoa) {
 		return pessoa.stream().map(this::toResponse).collect(Collectors.toList());
 	}
+	
+	public List<Pessoa> toEntityCollection(List<PessoaRequest> pessoa) {
+		return pessoa.stream().map(this::toEntity).collect(Collectors.toList());
+	}
 
 	public Pessoa toEntity(PessoaRequest pessoaRequest) {
 		return modelMapper.map(pessoaRequest, Pessoa.class);

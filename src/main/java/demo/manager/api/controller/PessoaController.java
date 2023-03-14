@@ -1,5 +1,6 @@
 package demo.manager.api.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -89,5 +90,15 @@ public class PessoaController {
 		return ResponseEntity.ok(pessoaConverter.toConsultaResponse(pessoa.get()));
 
 	}
+	
+	//Cria uma nova pessoa, nome e data de nascimento são validados para não serem nulos
+		@PostMapping("/criar-lista")
+		@ResponseStatus(HttpStatus.CREATED)
+		public List<PessoaResponse> criarListaDePessoa(@Valid @RequestBody List<PessoaRequest> pessoaRequest) {
+			List<Pessoa> novoPessoa = pessoaService.salvarLista(pessoaConverter.toEntityCollection(pessoaRequest));
+			return pessoaConverter.toResponseCollection(novoPessoa);
+
+		}
+
 
 }

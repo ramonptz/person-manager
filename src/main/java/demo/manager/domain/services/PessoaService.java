@@ -1,10 +1,10 @@
 package demo.manager.domain.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import demo.manager.api.request.PessoaRequest;
@@ -31,6 +31,14 @@ public class PessoaService {
 	public Pessoa salvar(Pessoa novaPessoa) {
 		return pessoaRepository.save(novaPessoa);
 	}
+	
+	//Salva a lista de pessoas no banco de dados
+		public List<Pessoa> salvarLista(List<Pessoa> novaPessoa) {
+			for(Pessoa pessoa : novaPessoa) {
+			pessoaRepository.save(pessoa);
+			}
+			return novaPessoa;
+		}
 
 	//Busca a pessoa pelo id
 	public Optional<Pessoa> buscarPorId(Long idPessoa) {
