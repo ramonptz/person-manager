@@ -16,10 +16,11 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Boolean enderecoPrincipal;
-	private String logradouro;
-	private String cep;
 	private Long numero;
-	private String cidade;
+	
+	@ManyToOne
+	@JoinColumn(name = "cep")
+	private Cep cep;
 	
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
@@ -27,8 +28,7 @@ public class Endereco {
 
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", enderecoPrincipal=" + enderecoPrincipal + ", logradouro=" + logradouro
-				+ ", cep=" + cep + ", numero=" + numero + ", cidade=" + cidade + "]";
+		return "Endereco [id=" + id + ", enderecoPrincipal=" + enderecoPrincipal + ", cep=" + cep + ", numero=" + numero + "]";
 	}
 	
 }

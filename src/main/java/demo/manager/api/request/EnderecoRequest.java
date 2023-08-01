@@ -2,7 +2,7 @@ package demo.manager.api.request;
 
 import javax.validation.constraints.NotNull;
 
-import demo.manager.domain.model.Pessoa;
+import demo.manager.domain.model.Cep;
 import lombok.Data;
 
 @Data
@@ -10,13 +10,12 @@ public class EnderecoRequest {
 
 	private Boolean enderecoPrincipal = false;
 	@NotNull
-	private String logradouro;
-	@NotNull
-	private String cep;
+	private Long NumeroCep;
 	@NotNull
 	private Long numero;
-	@NotNull
-	private String cidade;
-	private Pessoa pessoa;
+	private Cep cep;
+	
+	
+	
 	
 }

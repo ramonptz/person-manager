@@ -27,7 +27,6 @@ import demo.manager.api.request.PessoaRequest;
 import demo.manager.api.response.PessoaConsultaResponse;
 import demo.manager.api.response.PessoaResponse;
 import demo.manager.domain.model.Pessoa;
-import demo.manager.domain.repository.PessoaRepository;
 import demo.manager.domain.services.PessoaService;
 import lombok.AllArgsConstructor;
 
@@ -38,8 +37,6 @@ public class PessoaController {
 
 	private PessoaConverter pessoaConverter;
 	private PessoaService pessoaService;
-	private PessoaRepository pessoaRepository;
-
 	//Lista pessoas sem mostrar o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
 	@GetMapping()
 	public Page<PessoaConsultaResponse> listarSemEnderecos(@RequestParam(required = false) String nome,

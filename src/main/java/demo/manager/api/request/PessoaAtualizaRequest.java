@@ -2,8 +2,6 @@ package demo.manager.api.request;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import demo.manager.domain.model.Endereco;

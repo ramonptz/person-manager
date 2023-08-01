@@ -6,8 +6,7 @@ import lombok.Data;
 public class EnderecoResponse {
 	
 	private Boolean enderecoPrincipal;
-	private String logradouro;
-	private String cep;
+	private CepResponse cep;
 	private Long numero;
 	private String cidade;
 	private PessoaResponseSemEndereco pessoa;

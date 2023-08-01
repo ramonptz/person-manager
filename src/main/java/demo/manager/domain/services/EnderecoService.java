@@ -102,16 +102,16 @@ public class EnderecoService {
 	// Atualiza os dados de um endereço
 	public Endereco atualizaEndereco(Endereco enderecoExistente, EnderecoRequest enderecoAtualizado) {
 		Endereco endereco = enderecoExistente;
-		if (enderecoAtualizado.getCep() != null) {
-			endereco.setCep(enderecoAtualizado.getCep());
-		}
-
-		if (enderecoAtualizado.getCidade() != null) {
-			endereco.setCidade(enderecoAtualizado.getCidade());
-		}
-		if (enderecoAtualizado.getLogradouro() != null) {
-			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
-		}
+//		if (enderecoAtualizado.getCep() != null) {
+//			endereco.setCep(enderecoAtualizado.getCep());
+//		}
+//
+//		if (enderecoAtualizado.getCidade() != null) {
+//			endereco.setCidade(enderecoAtualizado.getCidade());
+//		}
+//		if (enderecoAtualizado.getLogradouro() != null) {
+//			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
+//		}
 		if (enderecoAtualizado.getNumero() != null) {
 			endereco.setNumero(enderecoAtualizado.getNumero());
 		}
