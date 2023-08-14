@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import demo.manager.api.converter.PessoaConverter;
+import demo.manager.api.converter.Conversor;
 import demo.manager.api.exceptionhandler.PessoaNotFound;
 import demo.manager.api.request.PessoaRequest;
-import demo.manager.api.response.PessoaConsultaResponse;
+import demo.manager.api.response.PessoaSemEnderecoResponse;
 import demo.manager.api.response.PessoaResponse;
 import demo.manager.domain.model.Pessoa;
 import demo.manager.domain.services.PessoaService;
@@ -35,14 +35,14 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/pessoa")
 public class PessoaController {
 
-	private PessoaConverter pessoaConverter;
+	private Conversor conversor;
 	private PessoaService pessoaService;
 	//Lista pessoas sem mostrar o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
 	@GetMapping()
-	public Page<PessoaConsultaResponse> listarSemEnderecos(@RequestParam(required = false) String nome,
+	public Page<PessoaSemEnderecoResponse> listarSemEnderecos(@RequestParam(required = false) String nome,
 			@PageableDefault(sort = "nome", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaService.listar(nome, paginacao);
-		return pessoaConverter.toPageConsultaResponse(pessoas);
+		return conversor.converterParaPage(pessoas, PessoaSemEnderecoResponse.class, paginacao);
 
 	}
 	//Lista pessoas mostrando o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
@@ -50,7 +50,7 @@ public class PessoaController {
 	public Page<PessoaResponse> listarComEndereco(@RequestParam(required = false) String nome,
 			@PageableDefault(sort = "nome", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaService.listar(nome, paginacao);
-		return pessoaConverter.toPageResponse(pessoas);
+		return conversor.converterParaPage(pessoas, PessoaResponse.class, paginacao);
 
 	}
 
@@ -63,9 +63,8 @@ public class PessoaController {
 
 		Pessoa pessoa = pessoaService.editaPessoa(pessoaExistente.get(), pessoaEditada);
 
-		//pessoaService.salvar(pessoa);
 
-		return ResponseEntity.ok(pessoaConverter.toResponse(pessoa));
+		return ResponseEntity.ok(conversor.converter(pessoa, PessoaResponse.class));
 
 	}
 
@@ -73,18 +72,19 @@ public class PessoaController {
 	@PostMapping("/criar")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PessoaResponse criarPessoa(@Valid @RequestBody PessoaRequest pessoaRequest) {
-		Pessoa novoPessoa = pessoaService.salvar(pessoaConverter.toEntity(pessoaRequest));
-		return pessoaConverter.toResponse(novoPessoa);
+		Pessoa novoPessoa = pessoaService.salvar(conversor.converter(pessoaRequest, Pessoa.class));
+		return conversor.converter(novoPessoa, PessoaResponse.class);
 
 	}
 
 	//Consulta uma pessoa passando o numero do id
 	@GetMapping("/consultar/{idPessoa}")
-	public ResponseEntity<PessoaConsultaResponse> consultarPessoa(@PathVariable Long idPessoa) {
+	public ResponseEntity<PessoaSemEnderecoResponse> consultarPessoa(@PathVariable Long idPessoa) {
 		Optional<Pessoa> pessoa = pessoaService.buscarPorId(idPessoa);
 
 		pessoa.orElseThrow(() -> new PessoaNotFound());
-		return ResponseEntity.ok(pessoaConverter.toConsultaResponse(pessoa.get()));
+		//return ResponseEntity.ok(pessoaConverter.toConsultaResponse(pessoa.get()));
+		return ResponseEntity.ok(conversor.converter(pessoa.get(), PessoaSemEnderecoResponse.class));
 
 	}
 	
@@ -92,9 +92,9 @@ public class PessoaController {
 		@PostMapping("/criar-lista")
 		@ResponseStatus(HttpStatus.CREATED)
 		public List<PessoaResponse> criarListaDePessoa(@Valid @RequestBody List<PessoaRequest> pessoaRequest) {
-			List<Pessoa> novoPessoa = pessoaService.salvarLista(pessoaConverter.toEntityCollection(pessoaRequest));
-			return pessoaConverter.toResponseCollection(novoPessoa);
-
+			List<Pessoa> novoPessoa = pessoaService.salvarLista(conversor.converterParaList(pessoaRequest,Pessoa.class));
+			return conversor.converterParaList(novoPessoa, PessoaResponse.class);
+			
 		}
 
 

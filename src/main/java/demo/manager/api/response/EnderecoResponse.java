@@ -8,6 +8,6 @@ public class EnderecoResponse {
 	private Boolean enderecoPrincipal;
 	private CepResponse cep;
 	private Long numero;
-	private PessoaResponseSemEndereco pessoa;
+	private PessoaSemEnderecoResponse pessoa;
 
 }
