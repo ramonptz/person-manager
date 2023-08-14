@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,16 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import demo.manager.api.converter.EnderecoConverter;
 import demo.manager.api.exceptionhandler.EnderecoNotFound;
 import demo.manager.api.request.EnderecoRequest;
 import demo.manager.api.response.EnderecoResponse;
-import demo.manager.domain.model.Cep;
 import demo.manager.domain.model.Endereco;
+import demo.manager.domain.repository.EnderecoRepository;
 import demo.manager.domain.services.CepService;
 import demo.manager.domain.services.EnderecoService;
 import lombok.AllArgsConstructor;
@@ -35,6 +37,7 @@ public class EnderecoController {
 	private EnderecoService enderecoService;
 	private EnderecoConverter enderecoConverter;
 	private CepService cepService;
+	private EnderecoRepository enderecoRepository;
 
 	// Cria novo endereço vinculado a pessoa que tem seu id passado na URL
 	// o primeiro endereço sempre será o principal até que outro seja criado ou
@@ -43,8 +46,8 @@ public class EnderecoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public EnderecoResponse criarEndereco(@Valid @RequestBody EnderecoRequest enderecoRequest,@PathVariable Long idPessoa) {
 
-		cepService.verificaCepESalva(enderecoRequest.getNumeroCep());
-		enderecoRequest.setCep(cepService.verificaCepESalva(enderecoRequest.getNumeroCep()));
+		cepService.verificaCepESalva(enderecoRequest.getCep().getCep());
+		enderecoRequest.setCep(cepService.verificaCepESalva(enderecoRequest.getCep().getCep()));
 		cepService.criaOuAtualizaCep(enderecoRequest.getCep());
 		
 		Endereco novoEndereco = enderecoService.novoEndereco((enderecoConverter.toEntity(enderecoRequest)), idPessoa);
@@ -73,5 +76,20 @@ public class EnderecoController {
 		List<Endereco> endereco = enderecoService.listarPelaPessoa(pessoaId);
 		return enderecoConverter.toResponseCollection(endereco);
 	}
+
+	// @GetMapping("/pesquisa")
+	// public List<EnderecoResponse> pesquisar(@RequestParam(required = false)String nomePessoa, String rua){
+	// 	return enderecoConverter.toResponseCollection(enderecoRepository.findByPessoaNomeIgnoreCaseContainingAndCepStreetIgnoreCaseContaining(nomePessoa, rua));
+	// }
+
+	// @GetMapping("/pesquisa2")
+	// public Page<EnderecoResponse> pesquisar2(@RequestParam(required = false)String nomePessoa, String rua, Pageable paginacao){
+	// 	return enderecoConverter.converter(enderecoRepository.testando123(nomePessoa,rua, paginacao));
+	// }
+
+	// @GetMapping("/pesquisa3")
+	// public Page<EnderecoResponse> pesquisar3(@RequestParam(required = false)String nomePessoa, String rua, Pageable paginacao){
+	// 	return enderecoConverter.convertPageToResponsePage(enderecoRepository.testando123(nomePessoa,rua, paginacao), EnderecoResponse.class, paginacao);
+	// }
 
 }

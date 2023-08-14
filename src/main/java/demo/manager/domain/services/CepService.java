@@ -1,13 +1,11 @@
 package demo.manager.domain.services;
 
-import demo.manager.api.exceptionhandler.CepNotFound;
-import demo.manager.api.exceptionhandler.PessoaNotFound;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import demo.manager.api.exceptionhandler.CepNotFound;
 import demo.manager.domain.model.Cep;
 import demo.manager.domain.repository.CepRepository;
 import lombok.AllArgsConstructor;

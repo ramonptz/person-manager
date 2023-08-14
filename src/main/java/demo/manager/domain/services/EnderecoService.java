@@ -19,6 +19,7 @@ public class EnderecoService {
 
 	private EnderecoRepository enderecoRepository;
 	private PessoaRepository pessoaRepository;
+	private CepService cepService;
 
 	// Cria um novo endereço, caso seja o primeiro ele torna o endereço em principal
 	// ou caso seja criado outro
@@ -118,6 +119,7 @@ public class EnderecoService {
 		if (enderecoAtualizado.getEnderecoPrincipal() != null) {
 			endereco.setEnderecoPrincipal(enderecoAtualizado.getEnderecoPrincipal());
 		}
+		endereco.setCep(cepService.verificaCepESalva(enderecoAtualizado.getCep().getCep()));
 		return endereco;
 	}
 

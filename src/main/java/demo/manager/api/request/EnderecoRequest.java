@@ -10,8 +10,6 @@ public class EnderecoRequest {
 
 	private Boolean enderecoPrincipal = false;
 	@NotNull
-	private Long NumeroCep;
-	@NotNull
 	private Long numero;
 	private Cep cep;
 	
