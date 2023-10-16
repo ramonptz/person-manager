@@ -105,23 +105,17 @@ public class EnderecoService {
 
 	// Atualiza os dados de um endereço
 	public Endereco atualizaEndereco(Endereco enderecoExistente, EnderecoRequest enderecoAtualizado) {
-		Endereco endereco = enderecoExistente;
-//		if (enderecoAtualizado.getCep() != null) {
-//			endereco.setCep(enderecoAtualizado.getCep());
-//		}
-//
-//		if (enderecoAtualizado.getCidade() != null) {
-//			endereco.setCidade(enderecoAtualizado.getCidade());
-//		}
-//		if (enderecoAtualizado.getLogradouro() != null) {
-//			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
-//		}
-	
-		Cep novoCep = cepService.verificaCepESalva(enderecoAtualizado.getCep().getCep());
-		conversor.atualizaObjeto(enderecoAtualizado, endereco);
-		endereco.setCep(novoCep);
 
-		return endereco;
-	}
+		// Cep novoCep = cepService.verificaCepESalva(enderecoAtualizado.getCep().getCep());
+		// conversor.atualizaObjeto(enderecoAtualizado, enderecoExistente);
+		// enderecoExistente.setCep(novoCep);
+		// return enderecoExistente;
+
+		Cep cepNumero = cepService.verificaCepESalva(enderecoAtualizado.getCep().getCep());
+		Endereco enderecoVerificado = conversor.atualizarObjeto(enderecoAtualizado, enderecoExistente);
+		enderecoVerificado.setCep(cepNumero);
+
+		return enderecoVerificado;
+	}	
 
 }
