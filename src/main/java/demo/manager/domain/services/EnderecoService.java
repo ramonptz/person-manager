@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import demo.manager.api.converter.Conversor;
 import demo.manager.api.exceptionhandler.PessoaNotFound;
 import demo.manager.api.request.EnderecoRequest;
+import demo.manager.domain.model.Cep;
 import demo.manager.domain.model.Endereco;
 import demo.manager.domain.model.Pessoa;
 import demo.manager.domain.repository.EnderecoRepository;
@@ -20,6 +22,7 @@ public class EnderecoService {
 	private EnderecoRepository enderecoRepository;
 	private PessoaRepository pessoaRepository;
 	private CepService cepService;
+	private Conversor conversor;
 
 	// Cria um novo endereço, caso seja o primeiro ele torna o endereço em principal
 	// ou caso seja criado outro
@@ -113,13 +116,11 @@ public class EnderecoService {
 //		if (enderecoAtualizado.getLogradouro() != null) {
 //			endereco.setLogradouro(enderecoAtualizado.getLogradouro());
 //		}
-		if (enderecoAtualizado.getNumero() != null) {
-			endereco.setNumero(enderecoAtualizado.getNumero());
-		}
-		if (enderecoAtualizado.getEnderecoPrincipal() != null) {
-			endereco.setEnderecoPrincipal(enderecoAtualizado.getEnderecoPrincipal());
-		}
-		endereco.setCep(cepService.verificaCepESalva(enderecoAtualizado.getCep().getCep()));
+	
+		Cep novoCep = cepService.verificaCepESalva(enderecoAtualizado.getCep().getCep());
+		conversor.atualizaObjeto(enderecoAtualizado, endereco);
+		endereco.setCep(novoCep);
+
 		return endereco;
 	}
 

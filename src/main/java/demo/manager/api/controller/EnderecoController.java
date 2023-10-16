@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,23 +30,30 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("/endereco")
 public class EnderecoController {
-
+	
 	private EnderecoService enderecoService;
 	private Conversor conversor;
 	private CepService cepService;
+	
+	// Retorna uma lista com os endereços da pessoa que tem seu id passado na URL
+	@GetMapping("{pessoaId}")
+	public List<EnderecoResponse> listar(@PathVariable Long pessoaId) {
+		List<Endereco> endereco = enderecoService.listarPelaPessoa(pessoaId);
+		return conversor.converterParaList(endereco, EnderecoResponse.class);
+	}
 
 	// Cria novo endereço vinculado a pessoa que tem seu id passado na URL
 	// o primeiro endereço sempre será o principal até que outro seja criado ou
 	// atualizado e passado como principal
-	@PostMapping("/criar/{idPessoa}")
+	@PostMapping("/criar/{pessoaId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public EnderecoResponse criarEndereco(@Valid @RequestBody EnderecoRequest enderecoRequest,@PathVariable Long idPessoa) {
-
+	public EnderecoResponse criarEndereco(@Valid @RequestBody EnderecoRequest enderecoRequest,@PathVariable Long pessoaId) {
+		
 		cepService.verificaCepESalva(enderecoRequest.getCep().getCep());
 		enderecoRequest.setCep(cepService.verificaCepESalva(enderecoRequest.getCep().getCep()));
 		cepService.criaOuAtualizaCep(enderecoRequest.getCep());
 		
-		Endereco novoEndereco = enderecoService.novoEndereco(conversor.converter(enderecoRequest, Endereco.class), idPessoa);
+		Endereco novoEndereco = enderecoService.novoEndereco(conversor.converter(enderecoRequest, Endereco.class), pessoaId);
 		return conversor.converter(novoEndereco, EnderecoResponse.class);
 		
 	}
@@ -65,12 +73,6 @@ public class EnderecoController {
 		return ResponseEntity.ok(conversor.converter(endereco, EnderecoResponse.class));
 	}
 
-	// Retorna uma lista com os endereços da pessoa que tem seu id passado na URL
-	@GetMapping("/listarEnderecos/{pessoaId}")
-	public List<EnderecoResponse> listar(@PathVariable Long pessoaId) {
-		List<Endereco> endereco = enderecoService.listarPelaPessoa(pessoaId);
-		return conversor.converterParaList(endereco, EnderecoResponse.class);
-	}
 
 	// @GetMapping("/pesquisa")
 	// public List<EnderecoResponse> pesquisar(@RequestParam(required = false)String nomePessoa, String rua){

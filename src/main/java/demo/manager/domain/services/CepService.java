@@ -31,6 +31,9 @@ public class CepService {
 	}
 
 	public ResponseEntity<Cep> validaCep(Long numeroCep){
+		if(numeroCep.toString().length() != 8){
+			throw new CepNotFound();
+		}
 		RestTemplate restTemplate = new RestTemplate();
 
 		try{
