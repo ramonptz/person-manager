@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -24,8 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import demo.manager.api.converter.Conversor;
 import demo.manager.api.exceptionhandler.PessoaNotFound;
 import demo.manager.api.request.PessoaRequest;
-import demo.manager.api.response.PessoaSemEnderecoResponse;
 import demo.manager.api.response.PessoaResponse;
+import demo.manager.api.response.PessoaSemEnderecoResponse;
 import demo.manager.domain.model.Pessoa;
 import demo.manager.domain.services.PessoaService;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class PessoaController {
 
 	private Conversor conversor;
 	private PessoaService pessoaService;
+	// private ModelMapper model = new ModelMapper();
 	//Lista pessoas sem mostrar o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
 	@GetMapping()
 	public Page<PessoaSemEnderecoResponse> listarSemEnderecos(@RequestParam(required = false) String nome,
@@ -60,7 +62,16 @@ public class PessoaController {
 			@RequestBody PessoaRequest pessoaEditada) {
 		Optional<Pessoa> pessoaExistente = pessoaService.buscarPorId(pessoaId);
 		pessoaExistente.orElseThrow(() -> new PessoaNotFound());
+		
+		// Pessoa pessoa = pessoaExistente.get();
+		// conversor.mapper().getConfiguration().setPropertyCondition(context -> context.getSource() != null);
+		// conversor.mapper().map(pessoaEditada, pessoa);
 
+		// var pessoaAtualizada = conversor.atualizarObjeto(pessoaEditada, pessoaExistente.get());
+
+		// pessoaService.salvar(pessoaExistente.get());
+
+		
 		Pessoa pessoa = pessoaService.editaPessoa(pessoaExistente.get(), pessoaEditada);
 
 
