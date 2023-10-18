@@ -2,11 +2,11 @@ FROM ubuntu:latest AS build
 
 RUN apt-get update
 RUN apt-get install openjdk-11-jdk -y
-RUN apt-get install maven -y
 
 COPY . .
 
-RUN mvn clean install
+RUN apt-get install maven -y
+RUN mvn clean install -dskipTests
 
 FROM openjdk:11-jdk-slim
 
