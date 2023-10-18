@@ -1,17 +1,19 @@
-FROM ubuntu:latest AS build
+FROM openjdk:11-jdk-slim AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-11-jdk -y
+RUN apt-get update && apt-get install -y maven
+
+WORKDIR /app
 
 COPY . .
 
-RUN apt-get install maven -y
 RUN mvn clean install
 
 FROM openjdk:11-jdk-slim
 
 EXPOSE 8080
 
-COPY --from=build /target/manager-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/manager-0.0.1-SNAPSHOT.jar /app/app.jar
+
+WORKDIR /app
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
