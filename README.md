@@ -45,7 +45,6 @@ Para consultar os endpoints disponíveis e seus detalhes, acesse a documentaçã
 
 - Caso necessário, é possível modificar as configurações do banco de dados H2 no arquivo `application.properties`.
 
-- Para alterar a integração com a API externa de consulta de CEP, acesse o arquivo `application.properties` e atualize as configurações apropriadas.
 
 ## Contribuindo
 

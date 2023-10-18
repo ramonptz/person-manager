@@ -1,9 +1,12 @@
 package demo.manager.domain.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -26,6 +29,9 @@ public class Cep {
 	@Column(name = "rua")
 //	@JsonProperty("rua")
 	private String street;
+
+	@OneToMany(mappedBy = "cep", cascade = CascadeType.ALL)
+	private List<Endereco> endereco;
 }
 
 

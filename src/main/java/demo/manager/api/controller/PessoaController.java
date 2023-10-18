@@ -42,7 +42,7 @@ public class PessoaController {
 	//Lista pessoas sem mostrar o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
 	@GetMapping()
 	public Page<PessoaSemEnderecoResponse> listarSemEnderecos(@RequestParam(required = false) String nome,
-			@PageableDefault(sort = "nome", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
+			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaService.listar(nome, paginacao);
 		return conversor.converterParaPage(pessoas, PessoaSemEnderecoResponse.class, paginacao);
 
@@ -57,8 +57,8 @@ public class PessoaController {
 	}
 
 	//Edita pessoa precisando passar o id da pessoa pela url e altera somente os campos que são passados
-	@PutMapping("/edita/{pessoaId}")
-	public ResponseEntity<PessoaResponse> edita(@PathVariable Long pessoaId,
+	@PutMapping("/edita")
+	public ResponseEntity<PessoaResponse> edita(@RequestParam Long pessoaId,
 			@RequestBody PessoaRequest pessoaEditada) {
 		Optional<Pessoa> pessoaExistente = pessoaService.buscarPorId(pessoaId);
 		pessoaExistente.orElseThrow(() -> new PessoaNotFound());
@@ -89,8 +89,8 @@ public class PessoaController {
 	}
 
 	//Consulta uma pessoa passando o numero do id
-	@GetMapping("/consultar/{idPessoa}")
-	public ResponseEntity<PessoaSemEnderecoResponse> consultarPessoa(@PathVariable Long idPessoa) {
+	@GetMapping("/consultar")
+	public ResponseEntity<PessoaSemEnderecoResponse> consultarPessoa(@RequestParam Long idPessoa) {
 		Optional<Pessoa> pessoa = pessoaService.buscarPorId(idPessoa);
 
 		pessoa.orElseThrow(() -> new PessoaNotFound());
