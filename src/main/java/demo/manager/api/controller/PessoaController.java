@@ -3,7 +3,7 @@ package demo.manager.api.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
