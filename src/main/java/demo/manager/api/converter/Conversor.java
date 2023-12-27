@@ -39,6 +39,12 @@ public class Conversor {
 		return lista;
 	}
 
+	// public ModelMapper mapper(){
+	// 	var model =  new ModelMapper();
+	// 	model.getConfiguration().setPropertyCondition(context -> context.getSource() != null);
+	// 	return model;
+	// }
+
 	public void atualizaObjeto(Object objetoQueVaiAtualizar, Object objetoASerAtualizado){
 		modelMapper.getConfiguration().setPropertyCondition(chave -> chave.getSource() != null);
 		modelMapper.map(objetoQueVaiAtualizar, objetoASerAtualizado);
@@ -49,7 +55,7 @@ public class Conversor {
         modelMapper.map(origem, destino);
         return destino;
     }
-
+	
 	
 	// public EnderecoResponse toResponse(Endereco endereco) {
 		

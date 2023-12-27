@@ -3,6 +3,7 @@ package demo.manager.domain.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.spi.ConversionContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -68,16 +69,7 @@ public class PessoaService {
 	//Edita as informações da pessoa atualizando apenas os campos que são passados
 	public Pessoa editaPessoa(Pessoa pessoaExistente, PessoaRequest pessoaEditada) {
 		Pessoa pessoa = pessoaExistente;
-		// if (pessoaEditada.getNome() != null) {
-		// 	pessoa.setNome(pessoaEditada.getNome());
-		// }
-
-		// if (pessoaEditada.getDataDeNascimento() != null) {
-		// 	pessoa.setDataDeNascimento(pessoaEditada.getDataDeNascimento());
-		// }
-		
 		conversor.atualizarObjeto(pessoaEditada, pessoa);
-
 		return salvar(pessoa);
 	}
 

@@ -1,6 +1,6 @@
 package demo.manager.api.request;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import demo.manager.domain.model.Cep;
 import lombok.Data;
