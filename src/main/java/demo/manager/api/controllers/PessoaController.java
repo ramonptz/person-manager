@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,8 @@ public class PessoaController {
 	public Page<PessoaSemEnderecoResponse> listarSemEnderecos(@RequestParam(required = false) String nome,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaService.listar(nome, paginacao);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println(encoder.encode("ramon"));
 		return conversor.converterParaPage(pessoas, PessoaSemEnderecoResponse.class, paginacao);
 
 	}
