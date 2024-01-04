@@ -29,7 +29,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/pessoa/**").hasAnyAuthority("123")
-                // .requestMatchers(HttpMethod.POST, "/pessoa/**").hasRole("123")
+                //  .requestMatchers(HttpMethod.GET, "/pessoa/**").hasRole("123")
                 .anyRequest().authenticated()
             ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -37,7 +37,7 @@ public class SecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-	    return (web) -> web.ignoring().requestMatchers("/h2","/h2/**");
+	    return (web) -> web.ignoring().requestMatchers("/h2","/h2/**","swagger-ui","swagger-ui/**","/v3/api-docs/**");
 }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{

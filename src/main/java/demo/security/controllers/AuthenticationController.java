@@ -1,12 +1,11 @@
 package demo.security.controllers;
 
-import org.apache.catalina.connector.Response;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,10 +45,24 @@ public class AuthenticationController {
 
     @PostMapping("/user")
     public ResponseEntity<Users> user(HttpServletResponse response) throws UsernameNotFoundException{
-        System.out.println("testanuy");
         // Users teste = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // Users user = AuthorizationService.userAuthenticated();
+		// String token = tokenService.generateToken(user);
+        // response.addHeader("ExpirationTime", tokenService.getExpirationTime(token));
+        
         return ResponseEntity.ok(AuthorizationService.userAuthenticated());
     }
+
+    @PostMapping(value = "/refresh_token")
+	public ResponseEntity<Void> refreshToken(HttpServletResponse response) throws UserPrincipalNotFoundException {
+		Users user = AuthorizationService.userAuthenticated();
+		String token = tokenService.generateToken(user);
+		response.addHeader("Authorization", "Bearer " + token);
+		//  response.addHeader("ExpirationTime", tokenService.getExpirationTime(token));
+		response.addHeader("access-control-expose-headers", "Authorization");
+		response.addHeader("access-control-expose-headers", "ExpirationTime");
+		return ResponseEntity.noContent().build();
+	}
 
     // @PostMapping("register")
     // public ResponseEntity register(@RequestBody  @Valid AuthenticationRequest data) {

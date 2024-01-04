@@ -24,6 +24,8 @@ import demo.manager.api.response.EnderecoResponse;
 import demo.manager.domain.model.Endereco;
 import demo.manager.domain.services.CepService;
 import demo.manager.domain.services.EnderecoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -37,6 +39,7 @@ public class EnderecoController {
 	
 	// Retorna uma lista com os endereços da pessoa que tem seu id passado na URL
 	@GetMapping("{pessoaId}")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	public List<EnderecoResponse> listar(@PathVariable Long pessoaId) {
 		List<Endereco> endereco = enderecoService.listarPelaPessoa(pessoaId);
 		return conversor.converterParaList(endereco, EnderecoResponse.class);
@@ -46,6 +49,7 @@ public class EnderecoController {
 	// o primeiro endereço sempre será o principal até que outro seja criado ou
 	// atualizado e passado como principal
 	@PostMapping("/criar/{pessoaId}")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	@ResponseStatus(HttpStatus.CREATED)
 	public EnderecoResponse criarEndereco(@Valid @RequestBody EnderecoRequest enderecoRequest,@PathVariable Long pessoaId) {
 		
@@ -61,6 +65,7 @@ public class EnderecoController {
 	// Atualiza o enderço e pode também ser feita a alteração de endereço principal
 	// através desse método
 	@PutMapping("atualizar/{enderecoId}")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	public ResponseEntity<EnderecoResponse> atualizar(@PathVariable Long enderecoId,
 			@RequestBody EnderecoRequest enderecoAtualizado) {
 		Optional<Endereco> enderecoExistente = enderecoService.buscarPorId(enderecoId);

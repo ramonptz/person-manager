@@ -30,6 +30,8 @@ import demo.manager.api.response.PessoaResponse;
 import demo.manager.api.response.PessoaSemEnderecoResponse;
 import demo.manager.domain.model.Pessoa;
 import demo.manager.domain.services.PessoaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -42,6 +44,7 @@ public class PessoaController {
 	// private ModelMapper model = new ModelMapper();
 	//Lista pessoas sem mostrar o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
 	@GetMapping()
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	public Page<PessoaSemEnderecoResponse> listarSemEnderecos(@RequestParam(required = false) String nome,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaService.listar(nome, paginacao);
@@ -52,6 +55,7 @@ public class PessoaController {
 	}
 	//Lista pessoas mostrando o endereço, pode ser feita pesquisa pelo nome e retorna uma pageable
 	@GetMapping("/listar-com-endereco")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	public Page<PessoaResponse> listarComEndereco(@RequestParam(required = false) String nome,
 			@PageableDefault(sort = "nome", direction = Direction.ASC, page = 0, size = 15) Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaService.listar(nome, paginacao);
@@ -61,6 +65,7 @@ public class PessoaController {
 
 	//Edita pessoa precisando passar o id da pessoa pela url e altera somente os campos que são passados
 	@PutMapping("/edita")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	public ResponseEntity<PessoaResponse> edita(@RequestParam Long pessoaId,
 			@RequestBody PessoaRequest pessoaEditada) {
 		Optional<Pessoa> pessoaExistente = pessoaService.buscarPorId(pessoaId);
@@ -84,6 +89,7 @@ public class PessoaController {
 
 	//Cria uma nova pessoa, nome e data de nascimento são validados para não serem nulos
 	@PostMapping("/criar")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	@ResponseStatus(HttpStatus.CREATED)
 	public PessoaResponse criarPessoa(@Valid @RequestBody PessoaRequest pessoaRequest) {
 		Pessoa novoPessoa = pessoaService.salvar(conversor.converter(pessoaRequest, Pessoa.class));
@@ -93,6 +99,7 @@ public class PessoaController {
 
 	//Consulta uma pessoa passando o numero do id
 	@GetMapping("/consultar")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 	public ResponseEntity<PessoaSemEnderecoResponse> consultarPessoa(@RequestParam Long idPessoa) {
 		Optional<Pessoa> pessoa = pessoaService.buscarPorId(idPessoa);
 
@@ -104,6 +111,7 @@ public class PessoaController {
 	
 	//Cria novas pessoas passadas por umas lista(array), nome e data de nascimento são validados para não serem nulos
 		@PostMapping("/criar-lista")
+		@Operation(security = { @SecurityRequirement(name = "bearer-key") })
 		@ResponseStatus(HttpStatus.CREATED)
 		public List<PessoaResponse> criarListaDePessoa(@Valid @RequestBody List<PessoaRequest> pessoaRequest) {
 			List<Pessoa> novoPessoa = pessoaService.salvarLista(conversor.converterParaList(pessoaRequest,Pessoa.class));
