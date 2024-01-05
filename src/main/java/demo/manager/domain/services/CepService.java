@@ -22,6 +22,13 @@ public class CepService {
 		return cepRepository.save(novoCep);
 	}
 
+	public Cep verificaCep (Long novoCep){
+
+		ResponseEntity<Cep> enderecoComCep = validaCep(novoCep);
+
+		return enderecoComCep.getBody();
+	}
+
 	public Cep verificaCepESalva (Long novoCep){
 
 		ResponseEntity<Cep> enderecoComCep = validaCep(novoCep);

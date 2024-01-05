@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import demo.manager.api.converter.Conversor;
 import demo.manager.api.exceptionhandler.EnderecoNotFound;
 import demo.manager.api.request.EnderecoRequest;
+import demo.manager.api.response.CepResponse;
 import demo.manager.api.response.EnderecoResponse;
 import demo.manager.domain.model.Endereco;
 import demo.manager.domain.services.CepService;
@@ -43,6 +44,12 @@ public class EnderecoController {
 	public List<EnderecoResponse> listar(@PathVariable Long pessoaId) {
 		List<Endereco> endereco = enderecoService.listarPelaPessoa(pessoaId);
 		return conversor.converterParaList(endereco, EnderecoResponse.class);
+	}
+
+	@GetMapping("/cep")
+	@Operation(security = { @SecurityRequirement(name = "bearer-key") })
+	public CepResponse pegaCep(Long cep){
+		return conversor.converter(cepService.verificaCep(cep), CepResponse.class);
 	}
 
 	// Cria novo endereço vinculado a pessoa que tem seu id passado na URL

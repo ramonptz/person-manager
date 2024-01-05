@@ -18,6 +18,8 @@ import demo.security.request.AuthenticationRequest;
 import demo.security.response.AuthenticationToken;
 import demo.security.service.AuthorizationService;
 import demo.security.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -44,12 +46,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/user")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Users> user(HttpServletResponse response) throws UsernameNotFoundException{
-        // Users teste = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        // Users user = AuthorizationService.userAuthenticated();
-		// String token = tokenService.generateToken(user);
-        // response.addHeader("ExpirationTime", tokenService.getExpirationTime(token));
-        
+
         return ResponseEntity.ok(AuthorizationService.userAuthenticated());
     }
 
