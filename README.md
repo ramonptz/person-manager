@@ -14,12 +14,15 @@ Uma Rest API em Java utilizando Spring Boot para gerenciamento de Pessoas e seus
 
 - Java
 - Spring Boot
+- Spring security(autenticação statelass via token jwt)
+- Spring docs (Swagger)
 - H2 Database (Banco de dados em memória)
 - API Externa de Consulta de CEP (Integração para obtenção de informações de endereço)
+  
 
 ## Pré-requisitos
 
-- Java JDK 11
+- Java JDK 17
 - Maven
 
 ## Instruções de Instalação
@@ -30,20 +33,25 @@ Uma Rest API em Java utilizando Spring Boot para gerenciamento de Pessoas e seus
    cd person-manager
 
 2. Compile o projeto utilizando o Maven:
-     mvn clean package
+     no terminal utilize o comando mvn install
 
 3. Execute a aplicação:
-   java -jar target/person-manager.jar
+ Após compilar será criada uma pastar target dentro da pasta do projeto e então basta inserir o comando no terminal
+ java -jar target/person-manager.jar
 
 A aplicação estará disponível em http://localhost:8080.
 
 ## Documentação da API
 
-Para consultar os endpoints disponíveis e seus detalhes, acesse a documentação interativa da API em http://localhost:8080/swagger-ui.html.
+Para consultar os endpoints disponíveis e seus detalhes, acesse a documentação interativa da API em http://localhost:8080/swagger-ui/index.html.
 
 ## Configurações Adicionais
 
 - Caso necessário, é possível modificar as configurações do banco de dados H2 no arquivo `application.properties`.
+
+  ## Acesso ao Banco de Dados H2
+
+- Caso seja necessário acessar o banco de dados para fazer alguamas verificações é possivel pela url http://localhost:8080/h2
 
 
 ## Contribuindo
