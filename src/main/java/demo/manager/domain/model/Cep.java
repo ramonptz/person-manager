@@ -2,17 +2,19 @@ package demo.manager.domain.model;
 
 import java.util.List;
 
+import demo.security.models.AuditoriaSimples;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-public class Cep {
+// @EqualsAndHashCode(callSuper=false)
+public class Cep/*  extends AuditoriaSimples */{
 	
 	@Id
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)

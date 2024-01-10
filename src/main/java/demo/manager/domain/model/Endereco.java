@@ -1,5 +1,6 @@
 package demo.manager.domain.model;
 
+import demo.security.models.AuditoriaSimples;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,10 +9,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-public class Endereco {
+// @EqualsAndHashCode(callSuper=false)
+public class Endereco/*  extends AuditoriaSimples */{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

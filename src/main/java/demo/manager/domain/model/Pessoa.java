@@ -12,11 +12,14 @@ import jakarta.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import demo.security.models.AuditoriaSimples;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-public class Pessoa {
+@EqualsAndHashCode(callSuper=false)
+public class Pessoa  extends AuditoriaSimples{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
