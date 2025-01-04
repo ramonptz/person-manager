@@ -22,30 +22,34 @@ public class SecurityConfiguration {
     private SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
+                // Permitir acesso para as URLs com prefixo /f/**
+                .requestMatchers("/index.html","**.js","**.css").permitAll()  // Permite /f/** e a raiz
                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/pessoa/**").hasAnyAuthority("123")
-                //  .requestMatchers(HttpMethod.GET, "/pessoa/**").hasRole("123")
-                .anyRequest().authenticated()
-            ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .anyRequest().authenticated()  // Requer autenticação para as demais rotas
+            )
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-	    return (web) -> web.ignoring().requestMatchers("/h2","/h2/**","swagger-ui","swagger-ui/**","/v3/api-docs/**");
-}
+        return (web) -> web.ignoring()
+            .requestMatchers("/h2", "/h2/**", "/f/**", "/", "swagger-ui", "swagger-ui/**", "/v3/api-docs/**");  // Ignora /f/** e outras URLs
+    }
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
